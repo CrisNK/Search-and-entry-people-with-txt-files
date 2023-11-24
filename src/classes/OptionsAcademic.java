@@ -1,8 +1,15 @@
 package classes;
 
 public class OptionsAcademic {
-    char rut = ' ';
-    char departament = ' ';
-    char researchArea = ' ';
-    char yearsInService = ' ';
+    public char rut;
+    public char departament;
+    public char researchArea;
+    public char yearsInService;
+
+    public OptionsAcademic() {
+        rut = ' ';
+        departament = ' ';
+        researchArea = ' ';
+        yearsInService = ' ';
+    }
 }

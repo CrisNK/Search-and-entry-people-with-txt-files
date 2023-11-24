@@ -18,22 +18,22 @@ public class App {
         ArrayList < Person > people = new ArrayList < > ();
         ArrayList < Student > students = new ArrayList < > ();
         ArrayList < Academic > academics = new ArrayList < > ();
-
+        
+        OptionsPerson optionsPerson = new OptionsPerson();
         while (true) {
             people.clear();
             students.clear();
             academics.clear();
 
-            clear();
+            clearTerminal();
             displayMainMenu();
             option = requestOption("main");
-
             // Menu principal
             switch (option) {
                 case 1:
                     String repeat = "";
                     do {
-                        clear();
+                        clearTerminal();
                         displayCreationMenu();
                         optionPerson = requestOption("person");
 
@@ -42,7 +42,7 @@ public class App {
                             case 1: // Crear persona
                                 displayPersonMenu();
                                 people.add(personCreated());
-                                clear();
+                                clearTerminal();
                                 System.out.print("Persona ingresada exitosamente.\n" +
                                     "¿Desea ingresar otra persona?\n" +
                                     "> ");
@@ -51,7 +51,7 @@ public class App {
                             case 2: // Crear estudiante
                                 displayStudentMenu();
                                 students.add(studentCreated());
-                                clear();
+                                clearTerminal();
                                 scanner.nextLine(); // Consume el salto de línea del buffer de entrada.
                                 System.out.print("Estudiante ingresado exitosamente.\n" +
                                     "¿Desea ingresar otra persona?\n" +
@@ -61,7 +61,7 @@ public class App {
                             case 3: // Crear académico
                                 displayAcademicMenu();
                                 academics.add(academicCreated());
-                                clear();
+                                clearTerminal();
                                 scanner.nextLine(); // Consume el salto de línea del buffer de entrada.
                                 System.out.print("Académico ingresado exitosamente.\n" +
                                     "¿Desea ingresar otra persona?\n" +
@@ -81,13 +81,14 @@ public class App {
                     int optionSearch = requestOption("search");
                     switch (optionSearch) {
                         case 1: // Buscar información referente a una persona.
+                            displayOptionsPerson(optionsPerson);
                             break;
                         case 2: // Buscar información referente a un estudiante.
                             break;
                         case 3: // Buscar información referente a un académico.
                             break;
                     }
-                    
+
 
                     break;
                 case 3: // Finalizar programa
@@ -120,21 +121,21 @@ public class App {
             "Seleccione una opcion: ");
     }
     public static void displayPersonMenu() {
-        clear();
+        clearTerminal();
         System.out.print(
             "*--------------------------*\n" +
             "|       Crear persona      |\n" +
             "*--------------------------*\n");
     }
     public static void displayStudentMenu() {
-        clear();
+        clearTerminal();
         System.out.print(
             "*--------------------------*\n" +
             "|     Crear estudiante     |\n" +
             "*--------------------------*\n");
     }
     public static void displayAcademicMenu() {
-        clear();
+        clearTerminal();
         System.out.print(
             "*--------------------------*\n" +
             "|      Crear académico     |\n" +
@@ -143,30 +144,29 @@ public class App {
     }
     public static void displaySearchMenu() {
         System.out.print(
-                "*--------------------------*\n" +
-                        "|   Búsqueda referente a:  |\n" +
-                        "*--------------------------*\n" +
-                        "| 1. Persona               |\n" +
-                        "| 2. Estudiante            |\n" +
-                        "| 3. Académico             |\n" +
-                        "*--------------------------*\n" +
-                        "> ");
+            "*--------------------------*\n" +
+            "|   Búsqueda referente a:  |\n" +
+            "*--------------------------*\n" +
+            "| 1. Persona               |\n" +
+            "| 2. Estudiante            |\n" +
+            "| 3. Académico             |\n" +
+            "*--------------------------*\n" +
+            "> ");
     }
-
     public static void displayOptionsPerson(OptionsPerson option) {
         System.out.print(
-                "*--------------------------------------*\n" +
-                "|   Categoría/s a buscar:  | Selección |\n" +
-                "*--------------------------|-----------|\n" +
-                "| 1. Rut                   |    [" + option.rut + "]    |\n" +
-                "| 2. Nombre completo       |    [" + option.fullName + "]    |\n" +
-                "| 3. Facultad              |    [" + option.faculty + "]    |\n" +
-                "| 4. Número de teléfono    |    [" + option.numberPhone + "]    |\n" +
-                "| 5. Correo electrónico    |    [" + option.email + "]    |\n" +
-                "| 6. Dirección             |    [" + option.address + "]    |\n" +
-                "| 7. Enviar opciones       |    [ ]    |\n" +
-                "*--------------------------------------*\n" +
-                "> ");
+            "*--------------------------------------*\n" +
+            "|   Categoría/s a buscar:  | Selección |\n" +
+            "*--------------------------|-----------|\n" +
+            "| 1. Rut                   |    [" + option.rut + "]    |\n" +
+            "| 2. Nombre completo       |    [" + option.fullName + "]    |\n" +
+            "| 3. Facultad              |    [" + option.faculty + "]    |\n" +
+            "| 4. Número de teléfono    |    [" + option.numberPhone + "]    |\n" +
+            "| 5. Correo electrónico    |    [" + option.email + "]    |\n" +
+            "| 6. Dirección             |    [" + option.address + "]    |\n" +
+            "| 7. Enviar opciones       |    [ ]    |\n" +
+            "*--------------------------------------*\n" +
+            "> ");
     }
 
     public static int requestOption(String IDMenu) {
@@ -174,7 +174,7 @@ public class App {
         do {
             option = scanner.nextInt();
             if (option < 1 || option > 3) {
-                clear();
+                clearTerminal();
                 System.out.println("La opcion ingresada no es válida.");
                 if (IDMenu.equals("main"))
                     displayMainMenu();
@@ -187,7 +187,7 @@ public class App {
         return option;
     }
     public static void selectOptions() {
-        
+
     }
     public static Person personCreated() {
         scanner.nextLine(); // Consume el salto de línea del buffer de entrada.
@@ -326,7 +326,7 @@ public class App {
         }
     }
 
-    public static void clear() {
+    public static void clearTerminal() {
         try {
             String os = System.getProperty("os.name").toLowerCase();
 

@@ -1,6 +1,7 @@
 import classes.Person;
 import classes.Student;
 import classes.Academic;
+import classes.OptionsPerson;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -32,6 +33,7 @@ public class App {
                 case 1:
                     String repeat = "";
                     do {
+                        clear();
                         displayCreationMenu();
                         optionPerson = requestOption("person");
 
@@ -75,6 +77,18 @@ public class App {
 
                     break;
                 case 2: // Buscar informacion
+                    displaySearchMenu();
+                    int optionSearch = requestOption("search");
+                    switch (optionSearch) {
+                        case 1: // Buscar información referente a una persona.
+                            break;
+                        case 2: // Buscar información referente a un estudiante.
+                            break;
+                        case 3: // Buscar información referente a un académico.
+                            break;
+                    }
+                    
+
                     break;
                 case 3: // Finalizar programa
                     System.exit(0);
@@ -95,7 +109,6 @@ public class App {
             "Seleccione una opcion: ");
     }
     public static void displayCreationMenu() {
-        clear();
         System.out.print(
             "*--------------------------*\n" +
             "|     Menu de registro     |\n" +
@@ -128,6 +141,33 @@ public class App {
             "*--------------------------*\n");
 
     }
+    public static void displaySearchMenu() {
+        System.out.print(
+                "*--------------------------*\n" +
+                        "|   Búsqueda referente a:  |\n" +
+                        "*--------------------------*\n" +
+                        "| 1. Persona               |\n" +
+                        "| 2. Estudiante            |\n" +
+                        "| 3. Académico             |\n" +
+                        "*--------------------------*\n" +
+                        "> ");
+    }
+
+    public static void displayOptionsPerson(OptionsPerson option) {
+        System.out.print(
+                "*--------------------------------------*\n" +
+                "|   Categoría/s a buscar:  | Selección |\n" +
+                "*--------------------------|-----------|\n" +
+                "| 1. Rut                   |    [" + option.rut + "]    |\n" +
+                "| 2. Nombre completo       |    [" + option.fullName + "]    |\n" +
+                "| 3. Facultad              |    [" + option.faculty + "]    |\n" +
+                "| 4. Número de teléfono    |    [" + option.numberPhone + "]    |\n" +
+                "| 5. Correo electrónico    |    [" + option.email + "]    |\n" +
+                "| 6. Dirección             |    [" + option.address + "]    |\n" +
+                "| 7. Enviar opciones       |    [ ]    |\n" +
+                "*--------------------------------------*\n" +
+                "> ");
+    }
 
     public static int requestOption(String IDMenu) {
         int option;
@@ -140,11 +180,15 @@ public class App {
                     displayMainMenu();
                 if (IDMenu.equals("person"))
                     displayCreationMenu();
+                if (IDMenu.equals("search"))
+                    displaySearchMenu();
             }
         } while (option < 1 || option > 3);
         return option;
     }
-
+    public static void selectOptions() {
+        
+    }
     public static Person personCreated() {
         scanner.nextLine(); // Consume el salto de línea del buffer de entrada.
         Person person = new Person();

@@ -3,23 +3,25 @@ import classes.Student;
 import classes.Academic;
 import classes.OptionsPerson;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 public class App {
     public static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
         int option, optionPerson;
         ArrayList < Person > people = new ArrayList < > ();
         ArrayList < Student > students = new ArrayList < > ();
         ArrayList < Academic > academics = new ArrayList < > ();
-        
-        OptionsPerson optionsPerson = new OptionsPerson();
+
         while (true) {
             people.clear();
             students.clear();
@@ -77,19 +79,45 @@ public class App {
 
                     break;
                 case 2: // Buscar informacion
+                    clearTerminal();
                     displaySearchMenu();
+
+                    OptionsPerson optionsPerson = new OptionsPerson();
+
+                    String aux;
+
                     int optionSearch = requestOption("search");
+                    int currentPosition = 125;
+                    char movement = '\0';
+
                     switch (optionSearch) {
                         case 1: // Buscar información referente a una persona.
-                            displayOptionsPerson(optionsPerson);
+                            scanner.nextLine(); // Consume salto de línea del buffer de entrada
+                            while (true) {
+                                clearTerminal();
+                                System.out.print(optionsPerson.menu);
+                                aux = scanner.nextLine();
+                                if (aux.isEmpty()) { // Si el usuario ingresa sólo un ENTER marca con una 'X'
+                                    if (currentPosition == 424) {
+                                        // Programar cuando el usuario le da a BUSCAR
+                                        break;
+                                    } else {
+                                        optionsPerson.check(currentPosition);
+                                    }
+                                } else {
+                                    movement = aux.charAt(0);
+                                    if (movement == 'w' && currentPosition >= 166)
+                                        currentPosition = optionsPerson.up(currentPosition);
+                                    if (movement == 's' && currentPosition <= 330)
+                                        currentPosition = optionsPerson.down(currentPosition);
+                                }
+                            }
                             break;
                         case 2: // Buscar información referente a un estudiante.
                             break;
                         case 3: // Buscar información referente a un académico.
                             break;
                     }
-
-
                     break;
                 case 3: // Finalizar programa
                     System.exit(0);
@@ -98,6 +126,23 @@ public class App {
         }
 
     }
+
+    public static void clearTerminal() {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            if (os.contains("win")) {
+                // Para Windows
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                // Para sistemas UNIX, Linux, macOS
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void displayMainMenu() {
         System.out.print(
             "*--------------------------*\n" +
@@ -151,21 +196,6 @@ public class App {
             "| 2. Estudiante            |\n" +
             "| 3. Académico             |\n" +
             "*--------------------------*\n" +
-            "> ");
-    }
-    public static void displayOptionsPerson(OptionsPerson option) {
-        System.out.print(
-            "*--------------------------------------*\n" +
-            "|   Categoría/s a buscar:  | Selección |\n" +
-            "*--------------------------|-----------|\n" +
-            "| 1. Rut                   |    [" + option.rut + "]    |\n" +
-            "| 2. Nombre completo       |    [" + option.fullName + "]    |\n" +
-            "| 3. Facultad              |    [" + option.faculty + "]    |\n" +
-            "| 4. Número de teléfono    |    [" + option.numberPhone + "]    |\n" +
-            "| 5. Correo electrónico    |    [" + option.email + "]    |\n" +
-            "| 6. Dirección             |    [" + option.address + "]    |\n" +
-            "| 7. Enviar opciones       |    [ ]    |\n" +
-            "*--------------------------------------*\n" +
             "> ");
     }
 
@@ -308,7 +338,8 @@ public class App {
             BufferedWriter bw2 = new BufferedWriter(fw2);
 
             for (Academic academic: academics) {
-                bw.write(academic.getRut() + " " + academic.getDepartament() + " " + academic.getResearchArea() + " " + academic.getYearsInService());
+                bw.write(academic.getRut() + " " + academic.getDepartament() + " " + academic.getResearchArea() + " " +
+                    academic.getYearsInService());
                 bw.newLine();
 
                 bw2.write(academic.getRut() + " " + academic.getFullName() + " " + academic.getFaculty() + " " +
@@ -326,19 +357,4 @@ public class App {
         }
     }
 
-    public static void clearTerminal() {
-        try {
-            String os = System.getProperty("os.name").toLowerCase();
-
-            if (os.contains("win")) {
-                // Para Windows
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                // Para sistemas UNIX, Linux, macOS
-                new ProcessBuilder("clear").inheritIO().start().waitFor();
-            }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -2,14 +2,11 @@ import classes.Person;
 import classes.Student;
 import classes.Academic;
 import classes.OptionsPerson;
-
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -84,7 +81,7 @@ public class App {
 
                     OptionsPerson optionsPerson = new OptionsPerson();
 
-                    String aux;
+                    String input;
 
                     int optionSearch = requestOption("search");
                     int currentPosition = 125;
@@ -96,8 +93,8 @@ public class App {
                             while (true) {
                                 clearTerminal();
                                 System.out.print(optionsPerson.menu);
-                                aux = scanner.nextLine();
-                                if (aux.isEmpty()) { // Si el usuario ingresa sólo un ENTER marca con una 'X'
+                                input = scanner.nextLine();
+                                if (input.isEmpty()) { // Si el usuario ingresa sólo un ENTER marca con una 'X'
                                     if (currentPosition == 424) {
                                         // Programar cuando el usuario le da a BUSCAR
                                         break;
@@ -105,7 +102,7 @@ public class App {
                                         optionsPerson.check(currentPosition);
                                     }
                                 } else {
-                                    movement = aux.charAt(0);
+                                    movement = input.charAt(0);
                                     if (movement == 'w' && currentPosition >= 166)
                                         currentPosition = optionsPerson.up(currentPosition);
                                     if (movement == 's' && currentPosition <= 330)

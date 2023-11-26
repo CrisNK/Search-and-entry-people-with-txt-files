@@ -27,99 +27,81 @@ public class App {
             clearTerminal();
             displayMainMenu();
             option = requestOption("main");
+            
             // Menu principal
-            switch (option) {
-                case 1:
-                    String repeat = "";
-                    do {
-                        clearTerminal();
-                        displayCreationMenu();
-                        optionPerson = requestOption("person");
-
-                        // Menú selectivo de persona/estudiante/académico
-                        switch (optionPerson) {
-                            case 1: // Crear persona
-                                displayPersonMenu();
-                                people.add(personCreated());
-                                clearTerminal();
-                                System.out.print("Persona ingresada exitosamente.\n" +
-                                    "¿Desea ingresar otra persona?\n" +
-                                    "> ");
-                                repeat = scanner.nextLine();
-                                break;
-                            case 2: // Crear estudiante
-                                displayStudentMenu();
-                                students.add(studentCreated());
-                                clearTerminal();
-                                scanner.nextLine(); // Consume el salto de línea del buffer de entrada.
-                                System.out.print("Estudiante ingresado exitosamente.\n" +
-                                    "¿Desea ingresar otra persona?\n" +
-                                    "> ");
-                                repeat = scanner.nextLine();
-                                break;
-                            case 3: // Crear académico
-                                displayAcademicMenu();
-                                academics.add(academicCreated());
-                                clearTerminal();
-                                scanner.nextLine(); // Consume el salto de línea del buffer de entrada.
-                                System.out.print("Académico ingresado exitosamente.\n" +
-                                    "¿Desea ingresar otra persona?\n" +
-                                    "> ");
-                                repeat = scanner.nextLine();
-                                break;
-                        }
-                    } while (repeat.equals("si"));
-
-                    writePeopleInTheFile(people);
-                    writeStudentsInTheFile(students);
-                    writeAcademicsInTheFile(academics);
-
-                    break;
-                case 2: // Buscar informacion
+            if (option == 1) {
+                do {
                     clearTerminal();
-                    displaySearchMenu();
+                    displayCreationMenu();
+                    optionPerson = requestOption("person");
 
-                    OptionsPerson optionsPerson = new OptionsPerson();
-
-                    String input;
-
-                    int optionSearch = requestOption("search");
-                    int currentPosition = 125;
-                    char movement = '\0';
-
-                    switch (optionSearch) {
-                        case 1: // Buscar información referente a una persona.
-                            scanner.nextLine(); // Consume salto de línea del buffer de entrada
-                            while (true) {
-                                clearTerminal();
-                                System.out.print(optionsPerson.menu);
-                                input = scanner.nextLine();
-                                if (input.isEmpty()) { // Si el usuario ingresa sólo un ENTER marca con una 'X'
-                                    if (currentPosition == 424) {
-                                        // Programar cuando el usuario le da a BUSCAR
-                                        break;
-                                    } else {
-                                        optionsPerson.check(currentPosition);
-                                    }
-                                } else {
-                                    movement = input.charAt(0);
-                                    if (movement == 'w' && currentPosition >= 166)
-                                        currentPosition = optionsPerson.up(currentPosition);
-                                    if (movement == 's' && currentPosition <= 330)
-                                        currentPosition = optionsPerson.down(currentPosition);
-                                }
-                            }
-                            break;
-                        case 2: // Buscar información referente a un estudiante.
-                            break;
-                        case 3: // Buscar información referente a un académico.
-                            break;
+                    // Menú selectivo de persona/estudiante/académico
+                    if (optionPerson == 1) {
+                        displayPersonMenu();
+                        people.add(personCreated());
                     }
-                    break;
-                case 3: // Finalizar programa
-                    System.exit(0);
-                    break;
+                    if (optionPerson == 2) {
+                        displayStudentMenu();
+                        students.add(studentCreated());
+                        scanner.nextLine(); // Consume el salto de línea del buffer de entrada.
+                    }
+                    if (optionPerson == 3) {
+                        displayAcademicMenu();
+                        academics.add(academicCreated());
+                        scanner.nextLine(); // Consume el salto de línea del buffer de entrada.
+                    }
+                    clearTerminal();
+                    System.out.print("\tIngreso exitoso\n" + "¿Desea ingresar otra persona?\n" + "> ");
+                } while (scanner.nextLine().equals("si"));
+
+                writePeopleInTheFile(people);
+                writeStudentsInTheFile(students);
+                writeAcademicsInTheFile(academics);
             }
+            if (option == 2) {
+
+                clearTerminal();
+                displaySearchMenu();
+
+                OptionsPerson optionsPerson = new OptionsPerson();
+
+                String input;
+
+                int optionSearch = requestOption("search");
+                int currentPosition = 125;
+                char movement = '\0';
+
+                switch (optionSearch) {
+                    case 1: // Buscar información referente a una persona.
+                        scanner.nextLine(); // Consume salto de línea del buffer de entrada
+                        while (true) {
+                            clearTerminal();
+                            System.out.print(optionsPerson.menu);
+                            input = scanner.nextLine();
+                            if (input.isEmpty()) { // Si el usuario ingresa sólo un ENTER marca con una 'X'
+                                if (currentPosition == 424) {
+                                    // Programar cuando el usuario le da a BUSCAR
+                                    break;
+                                } else {
+                                    optionsPerson.check(currentPosition);
+                                }
+                            } else {
+                                movement = input.charAt(0);
+                                if (movement == 'w' && currentPosition >= 166)
+                                    currentPosition = optionsPerson.up(currentPosition);
+                                if (movement == 's' && currentPosition <= 330)
+                                    currentPosition = optionsPerson.down(currentPosition);
+                            }
+                        }
+                        break;
+                    case 2: // Buscar información referente a un estudiante.
+                        break;
+                    case 3: // Buscar información referente a un académico.
+                        break;
+                }
+            }
+            if (option == 3)
+                System.exit(0);
         }
 
     }

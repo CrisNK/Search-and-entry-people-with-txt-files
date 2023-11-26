@@ -14,7 +14,6 @@ public class App {
     public static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        int option, optionPerson;
         ArrayList < Person > people = new ArrayList < > ();
         ArrayList < Student > students = new ArrayList < > ();
         ArrayList < Academic > academics = new ArrayList < > ();
@@ -26,14 +25,14 @@ public class App {
 
             clearTerminal();
             displayMainMenu();
-            option = requestOption("main");
-            
+            int option = requestOption("main");
+
             // Menu principal
             if (option == 1) {
                 do {
                     clearTerminal();
                     displayCreationMenu();
-                    optionPerson = requestOption("person");
+                    int optionPerson = requestOption("person");
 
                     // Menú selectivo de persona/estudiante/académico
                     if (optionPerson == 1) {
@@ -50,60 +49,54 @@ public class App {
                         academics.add(academicCreated());
                         scanner.nextLine(); // Consume el salto de línea del buffer de entrada.
                     }
+
                     clearTerminal();
                     System.out.print("\tIngreso exitoso\n" + "¿Desea ingresar otra persona?\n" + "> ");
-                } while (scanner.nextLine().equals("si"));
+                } while (scanner.next().equals("si"));
 
                 writePeopleInTheFile(people);
                 writeStudentsInTheFile(students);
                 writeAcademicsInTheFile(academics);
             }
             if (option == 2) {
-
                 clearTerminal();
                 displaySearchMenu();
 
                 OptionsPerson optionsPerson = new OptionsPerson();
 
-                String input;
-
-                int optionSearch = requestOption("search");
-                int currentPosition = 125;
-                char movement = '\0';
-
-                switch (optionSearch) {
-                    case 1: // Buscar información referente a una persona.
-                        scanner.nextLine(); // Consume salto de línea del buffer de entrada
-                        while (true) {
-                            clearTerminal();
-                            System.out.print(optionsPerson.menu);
-                            input = scanner.nextLine();
-                            if (input.isEmpty()) { // Si el usuario ingresa sólo un ENTER marca con una 'X'
-                                if (currentPosition == 424) {
-                                    // Programar cuando el usuario le da a BUSCAR
-                                    break;
-                                } else {
-                                    optionsPerson.check(currentPosition);
-                                }
+                int optionSearch = requestOption("search"), currentPosition = 125;
+                if (optionSearch == 1) { // Buscar información referente a una persona.
+                    scanner.nextLine(); // Consume salto de línea del buffer de entrada
+                    while (true) {
+                        clearTerminal();
+                        System.out.print(optionsPerson.menu);
+                        String input = scanner.nextLine();
+                        if (input.isEmpty()) { // Si el usuario ingresa sólo un ENTER marca con una 'X'
+                            if (currentPosition == 424) {
+                                // Programar cuando el usuario le da a BUSCAR
+                                break;
                             } else {
-                                movement = input.charAt(0);
-                                if (movement == 'w' && currentPosition >= 166)
-                                    currentPosition = optionsPerson.up(currentPosition);
-                                if (movement == 's' && currentPosition <= 330)
-                                    currentPosition = optionsPerson.down(currentPosition);
+                                optionsPerson.check(currentPosition);
                             }
+                        } else {
+                            char movement = input.charAt(0);
+                            if (movement == 'w' && currentPosition >= 166)
+                                currentPosition = optionsPerson.up(currentPosition);
+                            if (movement == 's' && currentPosition <= 330)
+                                currentPosition = optionsPerson.down(currentPosition);
                         }
-                        break;
-                    case 2: // Buscar información referente a un estudiante.
-                        break;
-                    case 3: // Buscar información referente a un académico.
-                        break;
+                    }
+                }
+                if (optionSearch == 2) { // Buscar información referente a un estudiante.
+
+                }
+                if (optionSearch == 3) { // Buscar información referente a un académico.
+
                 }
             }
             if (option == 3)
                 System.exit(0);
         }
-
     }
 
     public static void clearTerminal() {
